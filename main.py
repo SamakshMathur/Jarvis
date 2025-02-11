@@ -2,7 +2,7 @@ import speech_recognition as sr
 import webbrowser
 import pyttsx3
 import time
-
+import musicLibrary
 recognizer = sr.Recognizer()
 engine = pyttsx3.init()
 
@@ -21,7 +21,11 @@ def processCommand(c):
         webbrowser.open("https://in.linkedin.com/") 
     elif "open youtube" in c.lower():
         webbrowser.open("https://www.youtube.com/")
-    
+    elif c.lower().startswith("play"):
+        song = c.lower().split(" ")[1]
+        link =  musicLibrary.songs[song]
+        webbrowser.open(link)
+        
 if __name__ == "__main__":
     speak("Initializing jarvis...")
 
@@ -34,7 +38,7 @@ while True:
     try:             
         with sr.Microphone() as source:               
             print("Listening")                           
-            audio = r.listen(source, timeout=2, phrase_time_limit=1)           
+            audio = r.listen(source, timeout=10, phrase_time_limit=10)           
         word = r.recognize_google(audio) # type: ignore
         if word.lower() == "jarvis" and not jarvis_activated:
             speak("Ya")   
